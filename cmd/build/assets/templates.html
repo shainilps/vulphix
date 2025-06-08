@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>{{ .Meta.Title }}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {{ range .StyleSheets }}
+        <link rel="stylesheet" href="{{ . }}" />
+        {{ end }}
+    </head>
+    <body>
+        <header class="topbar">
+            <div class="container">
+                <h1>{{.Title}}</h1>
+                <span class="site-title">{{ .Meta.Title }}</span>
+            </div>
+        </header>
+
+        <div class="layout">
+            <aside class="sidebar">
+                {{ range .LeftSideBar }}
+                <section>
+                    <h3>{{ .Title }}</h3>
+                    <ul>
+                        {{ range .Pages }}
+                        <li>
+                            <a href="{{ index . 1 }}.html">{{ index . 0 }}</a>
+                        </li>
+                        {{ end }}
+                    </ul>
+                </section>
+                {{ end }}
+            </aside>
+
+            <main class="content">{{ .Content }}</main>
+        </div>
+    </body>
+</html>

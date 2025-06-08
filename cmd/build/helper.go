@@ -2,9 +2,6 @@ package build
 
 import (
 	"bytes"
-	"io"
-	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/goccy/go-yaml"
@@ -12,7 +9,10 @@ import (
 )
 
 type PageMeta struct {
-	Title string
+	Title       string
+	Domain      string
+	Description string
+	Handle      string
 }
 
 func renderMarkdown(md []byte) ([]byte, error) {
@@ -28,8 +28,8 @@ func extractFrontMatter(md []byte) (*PageMeta, []byte, error) {
 	if !strings.HasPrefix(content, "---") {
 		return nil, md, nil
 	}
-	parts := strings.SplitN(content, "---", 3)
-	if len(parts) == 3 {
+	parts := strings.SplitN(strings.TrimSpace(content), "---", 3)
+	if len(parts) == 4 {
 		return nil, md, nil
 	}
 
@@ -40,45 +40,7 @@ func extractFrontMatter(md []byte) (*PageMeta, []byte, error) {
 	if err != nil {
 		return nil, md, err
 	}
+
 	return &pagemeta, []byte(markdownPart), nil
 
-}
-
-func copyFile(src, dst string) error {
-	from, err := os.Open(src)
-	if err != nil {
-		return err
-	}
-	defer from.Close()
-
-	err = os.MkdirAll(filepath.Dir(dst), 0755) // Ensure target dir exists
-	if err != nil {
-		return err
-	}
-
-	to, err := os.Create(dst)
-	if err != nil {
-		return err
-	}
-	defer to.Close()
-
-	_, err = io.Copy(to, from)
-	return err
-}
-
-func copyDir(src, dst string) error {
-	return filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		relPath, _ := filepath.Rel(src, path)
-		targetPath := filepath.Join(dst, relPath)
-
-		if info.IsDir() {
-			return os.MkdirAll(targetPath, info.Mode())
-		}
-
-		return copyFile(path, targetPath)
-	})
 }

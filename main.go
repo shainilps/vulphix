@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/codeshaine/vulpix/cmd/build"
+	"github.com/codeshaine/vulpix/cmd/preview"
 )
 
 var help = `vulpix
@@ -32,7 +33,7 @@ func main() {
 	}
 
 	if cmd == "preview" {
-		fmt.Println("started the server: http://localhost:5000")
+		os.Exit(preview.PreviewBuild())
 		return
 	}
 	fmt.Println("unknown command!!")

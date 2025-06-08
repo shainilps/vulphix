@@ -2,10 +2,10 @@ package build
 
 import (
 	"bytes"
+	"embed"
 	"errors"
 	"fmt"
 	"html/template"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -36,29 +36,43 @@ type Config struct {
 }
 
 type Page struct {
-	Meta         PageMeta
-	LeftSideBar  template.HTML
-	Content      template.HTML
-	RightSideBar template.HTML
+	Title       string
+	Meta        PageMeta
+	LeftSideBar []SidebarItem
+	Content     template.HTML
+	// RightSideBar []template.HTML
+	StyleSheets []string
 }
 
-func Build() int {
-	//load config
+//go:embed assets/*
+var assets embed.FS
+
+func readEmbedFiles(filename string) ([]byte, error) {
+	return assets.ReadFile(filename)
+}
+
+func readConfig() (*Config, error) {
 	byte, err := os.ReadFile(CONFIG_FILE)
 	if err != nil {
-		if errors.Is(err, os.ErrNotExist) {
-			fmt.Print("Missing '%v'", CONFIG_FILE)
-			return 1
-		}
-		fmt.Println(err)
-		return 1
+		return nil, err
 	}
 	var config Config
 	err = yaml.Unmarshal(byte, &config)
 	if err != nil {
-		fmt.Println(err)
+		return nil, err
+	}
+	return &config, nil
+}
+
+func Build() int {
+	config, err := readConfig()
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) || config == nil {
+			fmt.Print("Missing '%v'", CONFIG_FILE)
+		}
 		return 1
 	}
+
 	if config.Source == "" {
 		config.Source = DEFAULT_SOURCE
 	}
@@ -78,27 +92,12 @@ func Build() int {
 	os.RemoveAll(config.Build)
 	os.Mkdir(config.Build, 0755)
 
-	//copy the asset files
-	err = copyDir("cmd/build/assets", filepath.Join(config.Build, "assets"))
-	if err != nil {
-		fmt.Println(err)
-		return 1
-	}
-
-	stpl := template.Must(template.ParseFiles("cmd/build/templates/sidebar.html"))
-	var sidebar bytes.Buffer
-	err = stpl.Execute(&sidebar, config.Sidebar)
-	if err != nil {
-		fmt.Println(err)
-		return 1
-	}
 	//walk throuh directory and do logic
 
 	filepath.WalkDir(config.Source, func(path string, d os.DirEntry, err error) error {
 		if err != nil || d.IsDir() || !strings.HasSuffix(path, ".md") {
 			return nil
 		}
-
 		md, err := os.ReadFile(path)
 		if err != nil {
 			return err
@@ -115,17 +114,24 @@ func Build() int {
 		if meta == nil {
 			meta = &PageMeta{}
 		}
+		meta.Description = config.Description
+		meta.Domain = config.Domain
+		meta.Handle = config.Handle
+
 		page := Page{
-			Meta:         *meta,
-			Content:      template.HTML(string(htmlBody)),
-			LeftSideBar:  template.HTML(sidebar.String()),
-			RightSideBar: template.HTML(""),
+			Meta:        *meta,
+			Title:       config.Title,
+			Content:     template.HTML(string(htmlBody)),
+			LeftSideBar: config.Sidebar,
+			StyleSheets: []string{"/style.css"},
 		}
-		tpl := template.Must(template.ParseFiles("cmd/build/templates/layout.html"))
+
+		templ := template.Must(template.ParseFS(assets, "assets/templates.html"))
 		var out bytes.Buffer
-		err = tpl.Execute(&out, page)
+		err = templ.Execute(&out, page)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
+			return err
 		}
 
 		relPath, _ := filepath.Rel(config.Source, path)
@@ -134,15 +140,23 @@ func Build() int {
 
 		err = os.WriteFile(outPath, out.Bytes(), 0644)
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
-		err = os.WriteFile(outPath, out.Bytes(), 0644)
-		if err != nil {
-			return err
-		}
-
 		return nil
 	})
+	styleCSS, err := readEmbedFiles("assets/style.css")
+	if err != nil {
+		fmt.Println(err)
+		return 1
+	}
+
+	err = os.WriteFile(filepath.Join(config.Build, "style.css"), styleCSS, 0644)
+
+	if err != nil {
+		fmt.Println(err)
+		return 1
+	}
 
 	return 0
 }
