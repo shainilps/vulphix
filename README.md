@@ -11,7 +11,7 @@ vulpix preview
 # customization
 title: site-name
 domain: site-domain.com # (optional)
-description: your doc site description
+description: your doc site descriptio
 handle: https://x.com/your-username #any social media handle link
 source: src
 build: dist
@@ -25,8 +25,12 @@ sidebar:
       - - Github
         - https://github.com/username
 ```
+Note:
+- index.md which reside in your source root will be your home page
+- It's good practice to put images in `assets` directory
+- assets/favicon.png or any format will be choosen as favicon of your site
 
-## Features
+## Feature
 - [ ] fixed template (for now)
 - [ ] syntax highlight support for (Go, JavaScript, TypeScript)
 - [ ] build preview
@@ -38,4 +42,4 @@ sidebar:
 ## Contributing
 open for contribution. you can fork repo, create a issue and  make a PR. (that's all)
 
-<center>happy coding<3</center>
+<center>happy coding<3 <center/>
