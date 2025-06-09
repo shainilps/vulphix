@@ -3,21 +3,40 @@
     <head>
         <meta charset="UTF-8" />
         <title>{{ .Meta.Title }}</title>
+
+        <meta name="description" content="{{ .Meta.Description }}" />
+        <meta name="author" content="{{ .Meta.Handle }}" />
+        <meta name="og:title" content="{{ .Meta.Title }}" />
+        <meta name="og:description" content="{{ .Meta.Description }}" />
+        <meta name="og:url" content="{{ .Meta.Domain }}" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- for inter -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <script>
+            (function () {
+                const savedTheme = localStorage.getItem("theme");
+                if (savedTheme === "dark") {
+                    document.documentElement.setAttribute("data-theme", "dark");
+                }
+            })();
+        </script>
         {{ range .StyleSheets }}
         <link rel="stylesheet" href="{{ . }}" />
         {{ end }}
     </head>
     <body>
-        <header class="topbar">
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+            🌙
+        </button>
+        <nav class="bar">
+            <a href="/" class="logo"> {{ .Title }} </a>
             <div class="container">
-                <h1>{{.Title}}</h1>
-                <span class="site-title">{{ .Meta.Title }}</span>
-            </div>
-        </header>
-
-        <div class="layout">
-            <aside class="sidebar">
                 {{ range .LeftSideBar }}
                 <section>
                     <h3>{{ .Title }}</h3>
@@ -30,9 +49,28 @@
                     </ul>
                 </section>
                 {{ end }}
-            </aside>
+            </div>
+        </nav>
 
-            <main class="content">{{ .Content }}</main>
-        </div>
+        <main class="content">
+            <h1>{{ .Meta.Title }}</h1>
+            {{ .Content }}
+        </main>
+        <script>
+            function toggleTheme() {
+                const html = document.documentElement;
+                const toggleBtn = document.getElementById("themeToggle");
+
+                if (html.getAttribute("data-theme") === "dark") {
+                    html.removeAttribute("data-theme");
+                    toggleBtn.textContent = "🌙";
+                    localStorage.setItem("theme", "light");
+                } else {
+                    html.setAttribute("data-theme", "dark");
+                    toggleBtn.textContent = "☀️";
+                    localStorage.setItem("theme", "dark");
+                }
+            }
+        </script>
     </body>
 </html>
