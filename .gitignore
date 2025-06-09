@@ -2,6 +2,7 @@
 example.config.yaml
 src
 dist
+ignore.sh
 
 # Binaries for programs and plugins
 #

@@ -1,0 +1,25 @@
+title: Vulpix
+domain: doc.vulpix.com # (optional)
+description: this is the docs of your vulpix
+handle: https://x.com/codeshaine
+source: doc/src
+build: dist
+sidebar:
+  - title: Basics
+    pages:
+      - - Installation
+        - /basics/installation
+      - - Usage
+        - /basics/usage
+      - - Config File
+        - /basics/configfile
+  - title: Guides
+    pages:
+      - - Deployement
+        - /guides/deploy
+  - title: Links
+    pages:
+      - - Github
+        - https://github.com/codeshaine/vulpix
+      - - Twitter
+        - https://x.com/code_shaine

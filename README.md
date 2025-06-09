@@ -7,6 +7,8 @@ vulpix init #TODO
 vulpix build
 vulpix preview
 ```
+
+vulpix.config.yaml
 ```yaml
 # customization
 title: site-name
@@ -27,17 +29,20 @@ sidebar:
 ```
 Note:
 - index.md which reside in your source root will be your home page
-- It's good practice to put images in `assets` directory
-- assets/favicon.png or any format will be choosen as favicon of your site
+- put favicon.ico in root of source for chooseing it as favicon of your site
 
 ## Feature
-- [ ] fixed template (for now)
+- [x] fixed template (for now)
 - [ ] syntax highlight support for (Go, JavaScript, TypeScript)
-- [ ] build preview
+- [x] build preview
+- [x] left side bar navigation for site
+- [ ] go releaser
 - [ ] vulpix init
-- [ ]  deploy to some cloud
-- [ ]  ci/cd generator for project (Future plan)
+- [ ] right side bar navigation for page
+- [ ] deploy to some cloud
+- [ ] ci/cd generator for project (Future plan)
 - [ ] Hot reload (Future plan)
+
 
 ## Contributing
 open for contribution. you can fork repo, create a issue and  make a PR. (that's all)

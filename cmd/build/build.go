@@ -15,7 +15,7 @@ import (
 
 // TODO: change this in prod
 const (
-	CONFIG_FILE    = "example.config.yaml"
+	CONFIG_FILE    = "vulpix.config.yaml"
 	DEFAULT_SOURCE = "src"
 	DEFAULT_BUILD  = "dist"
 )
@@ -40,7 +40,6 @@ type Page struct {
 	Meta        PageMeta
 	LeftSideBar []SidebarItem
 	Content     template.HTML
-	// RightSideBar []template.HTML
 	StyleSheets []string
 }
 
@@ -93,7 +92,6 @@ func Build() int {
 	os.Mkdir(config.Build, 0755)
 
 	//walk throuh directory and do logic
-
 	filepath.WalkDir(config.Source, func(path string, d os.DirEntry, err error) error {
 		if err != nil || d.IsDir() || !strings.HasSuffix(path, ".md") {
 			return nil
@@ -145,17 +143,38 @@ func Build() int {
 		}
 		return nil
 	})
+
+	//---------copy assets into the build (like custom) ----------
 	styleCSS, err := readEmbedFiles("assets/style.css")
 	if err != nil {
 		fmt.Println(err)
 		return 1
 	}
-
 	err = os.WriteFile(filepath.Join(config.Build, "style.css"), styleCSS, 0644)
-
 	if err != nil {
 		fmt.Println(err)
 		return 1
+	}
+	notFoundPage, err := readEmbedFiles("assets/404.html")
+	if err != nil {
+		fmt.Println(err)
+		return 1
+	}
+	err = os.WriteFile(filepath.Join(config.Build, "404.html"), notFoundPage, 0644)
+	if err != nil {
+		fmt.Println(err)
+		return 1
+	}
+	favicon, err := os.ReadFile(filepath.Join(config.Source, "favicon.ico"))
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			fmt.Println("favicon not found: `favicon.ico`")
+		}
+	} else {
+		err = os.WriteFile(filepath.Join(config.Build, "favicon.ico"), favicon, 0644)
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 
 	return 0
