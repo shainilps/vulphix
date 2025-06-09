@@ -1,6 +1,5 @@
 #for local dev
 example.config.yaml
-src
 dist
 ignore.sh
 
