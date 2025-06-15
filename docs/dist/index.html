@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Vulpix Documentation</title>
+
+        <meta name="description" content="this is the docs of your vulpix" />
+        <meta name="author" content="https://x.com/codeshaine" />
+        <meta name="og:title" content="Vulpix Documentation" />
+        <meta name="og:description" content="this is the docs of your vulpix" />
+        <meta name="og:url" content="doc.vulpix.com" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <script>
+            (function () {
+                const savedTheme = localStorage.getItem("theme");
+                if (savedTheme === "dark") {
+                    document.documentElement.setAttribute("data-theme", "dark");
+                }
+            })();
+        </script>
+        
+        <link rel="stylesheet" href="/style.css" />
+        
+    </head>
+    <body>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+            🌙
+        </button>
+        <nav class="bar">
+            <a href="/" class="logo"> Vulpix </a>
+            <div class="container">
+                
+                <section>
+                    <h3>Basics</h3>
+                    <ul>
+                        
+                        <li>
+                            <a href="/basics/installation.html">Installation</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/basics/usage.html">Usage</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/basics/configfile.html">Config File</a>
+                        </li>
+                        
+                    </ul>
+                </section>
+                
+                <section>
+                    <h3>Guides</h3>
+                    <ul>
+                        
+                        <li>
+                            <a href="/guides/deploy.html">Deployement</a>
+                        </li>
+                        
+                    </ul>
+                </section>
+                
+                <section>
+                    <h3>Links</h3>
+                    <ul>
+                        
+                        <li>
+                            <a href="https://github.com/codeshaine/vulpix.html">Github</a>
+                        </li>
+                        
+                        <li>
+                            <a href="https://x.com/code_shaine.html">Twitter</a>
+                        </li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </nav>
+
+        <main class="content">
+            <h1>Vulpix Documentation</h1>
+            <p><strong>Vulpix</strong> is simple, elegant, minimal SSG for your next docs. This project was developed by <a href="https://github.com/codeshaine">codeshaine</a> for fun. there are better alternatives if you want to have customizability and other things. If you still want to use this then go ahead I won't stop you haha</p>
+<p>PS: I forgot to mention This project idea is heavily inspired by <a href="https://malta.pilcrowonpaper.com">malta</a></p>
+
+        </main>
+        <script>
+            function toggleTheme() {
+                const html = document.documentElement;
+                const toggleBtn = document.getElementById("themeToggle");
+
+                if (html.getAttribute("data-theme") === "dark") {
+                    html.removeAttribute("data-theme");
+                    toggleBtn.textContent = "🌙";
+                    localStorage.setItem("theme", "light");
+                } else {
+                    html.setAttribute("data-theme", "dark");
+                    toggleBtn.textContent = "☀️";
+                    localStorage.setItem("theme", "dark");
+                }
+            }
+        </script>
+    </body>
+</html>

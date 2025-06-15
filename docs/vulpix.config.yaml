@@ -2,7 +2,7 @@ title: Vulpix
 domain: doc.vulpix.com # (optional)
 description: this is the docs of your vulpix
 handle: https://x.com/codeshaine
-source: doc/src
+source: src
 build: dist
 sidebar:
   - title: Basics
