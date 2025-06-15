@@ -22,7 +22,7 @@ func PreviewBuild() int {
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		extension := filepath.Ext(req.URL.Path)
 		if extension != "" {
-			data, err := os.ReadFile(path.Join("dist", req.URL.Path))
+			data, err := os.ReadFile(path.Join(dir, req.URL.Path))
 			if err != nil {
 				w.WriteHeader(404)
 				w.Write([]byte("404 - Not found"))
@@ -34,7 +34,7 @@ func PreviewBuild() int {
 		}
 		html, err := resolveHTMLRequest(req.URL.Path)
 		if errors.Is(err, fs.ErrNotExist) {
-			html, _ = os.ReadFile("dist/404.html")
+			html, _ = os.ReadFile(dir + "/404.html")
 			w.Header().Set("Content-Type", "text/html; charset=utf-8")
 			w.WriteHeader(404)
 			w.Write(html)

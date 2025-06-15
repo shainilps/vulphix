@@ -15,7 +15,7 @@ import (
 
 // TODO: change this in prod
 const (
-	CONFIG_FILE    = "vulpix.config.yaml"
+	CONFIG_FILE    = "vulphix.config.yaml"
 	DEFAULT_SOURCE = "src"
 	DEFAULT_BUILD  = "dist"
 )

@@ -3,7 +3,6 @@
     <head>
         <meta charset="UTF-8" />
         <title>{{ .Meta.Title }}</title>
-
         <meta name="description" content="{{ .Meta.Description }}" />
         <meta name="author" content="{{ .Meta.Handle }}" />
         <meta name="og:title" content="{{ .Meta.Title }}" />
@@ -31,10 +30,18 @@
         {{ end }}
     </head>
     <body>
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+
+        <header class="mobile-header">
+            <button class="mobile-nav-toggle" id="mobileNavToggle">☰</button>
+            <a href="/" class="mobile-logo">{{ .Title }}</a>
+        </header>
+
         <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
             🌙
         </button>
-        <nav class="bar">
+
+        <nav class="bar" id="sidebar">
             <a href="/" class="logo"> {{ .Title }} </a>
             <div class="container">
                 {{ range .LeftSideBar }}
@@ -51,7 +58,6 @@
                 {{ end }}
             </div>
         </nav>
-
         <main class="content">
             <h1>{{ .Meta.Title }}</h1>
             {{ .Content }}
@@ -60,7 +66,6 @@
             function toggleTheme() {
                 const html = document.documentElement;
                 const toggleBtn = document.getElementById("themeToggle");
-
                 if (html.getAttribute("data-theme") === "dark") {
                     html.removeAttribute("data-theme");
                     toggleBtn.textContent = "🌙";
@@ -71,6 +76,56 @@
                     localStorage.setItem("theme", "dark");
                 }
             }
+
+            // Mobile navigation functionality
+            const mobileNavToggle = document.getElementById("mobileNavToggle");
+            const sidebar = document.getElementById("sidebar");
+            const mobileOverlay = document.getElementById("mobileOverlay");
+
+            function toggleMobileNav() {
+                sidebar.classList.toggle("open");
+                mobileOverlay.classList.toggle("active");
+
+                // Toggle hamburger icon
+                if (sidebar.classList.contains("open")) {
+                    mobileNavToggle.textContent = "✕";
+                } else {
+                    mobileNavToggle.textContent = "☰";
+                }
+            }
+
+            function closeMobileNav() {
+                sidebar.classList.remove("open");
+                mobileOverlay.classList.remove("active");
+                mobileNavToggle.textContent = "☰";
+            }
+
+            // Event listeners
+            mobileNavToggle.addEventListener("click", toggleMobileNav);
+            mobileOverlay.addEventListener("click", closeMobileNav);
+
+            // Close mobile nav when clicking on a link
+            sidebar.addEventListener("click", (e) => {
+                if (e.target.tagName === "A" && window.innerWidth <= 768) {
+                    closeMobileNav();
+                }
+            });
+
+            // Close mobile nav on window resize if it's open
+            window.addEventListener("resize", () => {
+                if (window.innerWidth > 768) {
+                    closeMobileNav();
+                }
+            });
+
+            // Load saved theme
+            (function () {
+                const savedTheme = localStorage.getItem("theme");
+                if (savedTheme === "dark") {
+                    document.documentElement.setAttribute("data-theme", "dark");
+                    document.getElementById("themeToggle").textContent = "☀️";
+                }
+            })();
         </script>
     </body>
 </html>

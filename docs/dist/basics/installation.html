@@ -3,7 +3,6 @@
     <head>
         <meta charset="UTF-8" />
         <title>Instllation Process</title>
-
         <meta name="description" content="this is the docs of your vulpix" />
         <meta name="author" content="https://x.com/codeshaine" />
         <meta name="og:title" content="Instllation Process" />
@@ -31,10 +30,18 @@
         
     </head>
     <body>
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+
+        <header class="mobile-header">
+            <button class="mobile-nav-toggle" id="mobileNavToggle">☰</button>
+            <a href="/" class="mobile-logo">Vulpix</a>
+        </header>
+
         <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
             🌙
         </button>
-        <nav class="bar">
+
+        <nav class="bar" id="sidebar">
             <a href="/" class="logo"> Vulpix </a>
             <div class="container">
                 
@@ -85,7 +92,6 @@
                 
             </div>
         </nav>
-
         <main class="content">
             <h1>Instllation Process</h1>
             <p>Inroder to install the tool, you need to have Golang installed. If not you can download that <a href="https://go.dev/doc/install">here</a>.</p>
@@ -99,7 +105,6 @@
             function toggleTheme() {
                 const html = document.documentElement;
                 const toggleBtn = document.getElementById("themeToggle");
-
                 if (html.getAttribute("data-theme") === "dark") {
                     html.removeAttribute("data-theme");
                     toggleBtn.textContent = "🌙";
@@ -110,6 +115,56 @@
                     localStorage.setItem("theme", "dark");
                 }
             }
+
+            
+            const mobileNavToggle = document.getElementById("mobileNavToggle");
+            const sidebar = document.getElementById("sidebar");
+            const mobileOverlay = document.getElementById("mobileOverlay");
+
+            function toggleMobileNav() {
+                sidebar.classList.toggle("open");
+                mobileOverlay.classList.toggle("active");
+
+                
+                if (sidebar.classList.contains("open")) {
+                    mobileNavToggle.textContent = "✕";
+                } else {
+                    mobileNavToggle.textContent = "☰";
+                }
+            }
+
+            function closeMobileNav() {
+                sidebar.classList.remove("open");
+                mobileOverlay.classList.remove("active");
+                mobileNavToggle.textContent = "☰";
+            }
+
+            
+            mobileNavToggle.addEventListener("click", toggleMobileNav);
+            mobileOverlay.addEventListener("click", closeMobileNav);
+
+            
+            sidebar.addEventListener("click", (e) => {
+                if (e.target.tagName === "A" && window.innerWidth <= 768) {
+                    closeMobileNav();
+                }
+            });
+
+            
+            window.addEventListener("resize", () => {
+                if (window.innerWidth > 768) {
+                    closeMobileNav();
+                }
+            });
+
+            
+            (function () {
+                const savedTheme = localStorage.getItem("theme");
+                if (savedTheme === "dark") {
+                    document.documentElement.setAttribute("data-theme", "dark");
+                    document.getElementById("themeToggle").textContent = "☀️";
+                }
+            })();
         </script>
     </body>
 </html>
