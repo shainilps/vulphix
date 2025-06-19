@@ -13,7 +13,6 @@ import (
 	"github.com/goccy/go-yaml"
 )
 
-// TODO: change this in prod
 const (
 	CONFIG_FILE    = "vulphix.config.yaml"
 	DEFAULT_SOURCE = "src"
@@ -50,7 +49,7 @@ func readEmbedFiles(filename string) ([]byte, error) {
 	return assets.ReadFile(filename)
 }
 
-func readConfig() (*Config, error) {
+func ReadConfig() (*Config, error) {
 	byte, err := os.ReadFile(CONFIG_FILE)
 	if err != nil {
 		return nil, err
@@ -64,10 +63,10 @@ func readConfig() (*Config, error) {
 }
 
 func Build() int {
-	config, err := readConfig()
+	config, err := ReadConfig()
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) || config == nil {
-			fmt.Print("Missing '%v'", CONFIG_FILE)
+			fmt.Printf("Missing '%v'\n", CONFIG_FILE)
 		}
 		return 1
 	}

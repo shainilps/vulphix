@@ -16,8 +16,19 @@ import (
 const previewPort = 8080
 
 func PreviewBuild() int {
-	//TOOD: read this form config
-	const dir = build.DEFAULT_BUILD
+
+	config, err := build.ReadConfig()
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) || config == nil {
+			fmt.Printf("Missing '%v'\n", build.CONFIG_FILE)
+		}
+		return 1
+	}
+
+	dir := build.DEFAULT_BUILD
+	if config.Build != "" {
+		dir = config.Build
+	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		extension := filepath.Ext(req.URL.Path)
@@ -45,7 +56,7 @@ func PreviewBuild() int {
 	})
 
 	fmt.Printf("Preview server running at http://localhost:%d/\n", previewPort)
-	err := http.ListenAndServe(fmt.Sprintf(":%d", previewPort), nil)
+	err = http.ListenAndServe(fmt.Sprintf(":%d", previewPort), nil)
 	if err != nil {
 		fmt.Printf("Failed to start preview server: %v\n", err)
 		return 1

@@ -1,0 +1,34 @@
+name: Vulphix Binaries for release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.0"
+      - name: Display Go version
+        run: go version
+
+      - name: Installing dependencies
+        run: go mod download
+
+      - name: Building binaries
+        run: chmod +x build.sh && ./build.sh
+
+      - name: Create Release and Upload Binaries
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Vulphix ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          files: bin/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
