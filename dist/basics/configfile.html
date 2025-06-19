@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Configuration file</title>
+        <meta name="description" content="this is the docs of your vulpix" />
+        <meta name="author" content="https://x.com/codeshaine" />
+        <meta name="og:title" content="Configuration file" />
+        <meta name="og:description" content="this is the docs of your vulpix" />
+        <meta name="og:url" content="doc.vulpix.com" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <script>
+            (function () {
+                const savedTheme = localStorage.getItem("theme");
+                if (savedTheme === "dark") {
+                    document.documentElement.setAttribute("data-theme", "dark");
+                }
+            })();
+        </script>
+        
+        <link rel="stylesheet" href="/style.css" />
+        
+    </head>
+    <body>
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+
+        <header class="mobile-header">
+            <button class="mobile-nav-toggle" id="mobileNavToggle">☰</button>
+            <a href="/" class="mobile-logo">Vulpix</a>
+        </header>
+
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+            🌙
+        </button>
+
+        <nav class="bar" id="sidebar">
+            <a href="/" class="logo"> Vulpix </a>
+            <div class="container">
+                
+                <section>
+                    <h3>Basics</h3>
+                    <ul>
+                        
+                        <li>
+                            <a href="/basics/installation">Installation</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/basics/usage">Usage</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/basics/configfile">Config File</a>
+                        </li>
+                        
+                    </ul>
+                </section>
+                
+                <section>
+                    <h3>Guides</h3>
+                    <ul>
+                        
+                        <li>
+                            <a href="/guides/deploy">Deployement</a>
+                        </li>
+                        
+                    </ul>
+                </section>
+                
+                <section>
+                    <h3>Links</h3>
+                    <ul>
+                        
+                        <li>
+                            <a href="https://github.com/codeshaine/vulpix">Github</a>
+                        </li>
+                        
+                        <li>
+                            <a href="https://x.com/code_shaine">Twitter</a>
+                        </li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </nav>
+        <main class="content">
+            <h1>Configuration file</h1>
+            <p>As of right now config file of vulpix is very minmal. you don't get lot of features like you get from feature rich ssg like hugo or even the astro starlight. This ssg is simple, minimal and was designed for me</p>
+<p>Unlike other SSGs I am using YAML format as the config type, because It is more elegant to look at.</p>
+<p>config file:</p>
+<pre><code class="language-yaml">title: Vulpix
+domain: doc.vulpix.com # (optional)
+description: this is the docs of your vulpix
+handle: https://x.com/codeshaine
+source: doc/src
+build: dist
+sidebar:
+  - title: Basics
+    pages:
+      - - Getting started
+        - /getting_started/installation
+  - title: Links
+    pages:
+      - - Github
+        - https://github.com/codeshaine
+      - - Twitter
+        - https://x.com/code_shaine
+</code></pre>
+<p>The config file is more self  exploratory.</p>
+<ul>
+<li>title, domain, description, handle are used for the meta info of the site.</li>
+<li>note that title used as main logo</li>
+<li>source and build direcory is the path of your source and build that you want to generate</li>
+<li>sidebar is the main feature available here like other SSGs. This follow a list of object so you can have flexibility
+these are all the main features and characterstics</li>
+</ul>
+
+        </main>
+        <script>
+            function toggleTheme() {
+                const html = document.documentElement;
+                const toggleBtn = document.getElementById("themeToggle");
+                if (html.getAttribute("data-theme") === "dark") {
+                    html.removeAttribute("data-theme");
+                    toggleBtn.textContent = "🌙";
+                    localStorage.setItem("theme", "light");
+                } else {
+                    html.setAttribute("data-theme", "dark");
+                    toggleBtn.textContent = "☀️";
+                    localStorage.setItem("theme", "dark");
+                }
+            }
+
+            
+            const mobileNavToggle = document.getElementById("mobileNavToggle");
+            const sidebar = document.getElementById("sidebar");
+            const mobileOverlay = document.getElementById("mobileOverlay");
+
+            function toggleMobileNav() {
+                sidebar.classList.toggle("open");
+                mobileOverlay.classList.toggle("active");
+
+                
+                if (sidebar.classList.contains("open")) {
+                    mobileNavToggle.textContent = "✕";
+                } else {
+                    mobileNavToggle.textContent = "☰";
+                }
+            }
+
+            function closeMobileNav() {
+                sidebar.classList.remove("open");
+                mobileOverlay.classList.remove("active");
+                mobileNavToggle.textContent = "☰";
+            }
+
+            
+            mobileNavToggle.addEventListener("click", toggleMobileNav);
+            mobileOverlay.addEventListener("click", closeMobileNav);
+
+            
+            sidebar.addEventListener("click", (e) => {
+                if (e.target.tagName === "A" && window.innerWidth <= 768) {
+                    closeMobileNav();
+                }
+            });
+
+            
+            window.addEventListener("resize", () => {
+                if (window.innerWidth > 768) {
+                    closeMobileNav();
+                }
+            });
+
+            
+            (function () {
+                const savedTheme = localStorage.getItem("theme");
+                if (savedTheme === "dark") {
+                    document.documentElement.setAttribute("data-theme", "dark");
+                    document.getElementById("themeToggle").textContent = "☀️";
+                }
+            })();
+        </script>
+    </body>
+</html>
