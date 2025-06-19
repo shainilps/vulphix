@@ -1,5 +1,8 @@
 name: Vulphix Binaries for release
 
+permissions:
+  contents: write
+
 on:
   push:
     tags:
@@ -8,7 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
       - name: Setup Go ${{ matrix.go-version }}
