@@ -1,4 +1,4 @@
-module github.com/codeshaine/vulpix
+module github.com/codeshaine/vulphix
 
 go 1.24.0
 

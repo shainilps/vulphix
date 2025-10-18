@@ -10,7 +10,7 @@ import (
 	"path"
 	"path/filepath"
 
-	"github.com/codeshaine/vulpix/cmd/build"
+	"github.com/codeshaine/vulphix/cmd/build"
 )
 
 const previewPort = 8080

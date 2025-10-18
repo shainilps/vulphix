@@ -2,16 +2,16 @@
 title: Configuration file
 ---
 
-As of right now config file of vulpix is very minmal. you don't get lot of features like you get from feature rich ssg like hugo or even the astro starlight. This ssg is simple, minimal and was designed for me
+As of right now config file of vulphix is very minmal. you don't get lot of features like you get from feature rich ssg like hugo or even the astro starlight. This ssg is simple, minimal and was designed for me
 
 Unlike other SSGs I am using YAML format as the config type, because It is more elegant to look at.
 
 config file:
 
 ```yaml
-title: Vulpix
-domain: doc.vulpix.com # (optional)
-description: this is the docs of your vulpix
+title: Vulphix
+domain: doc.vulphix.com # (optional)
+description: this is the docs of your vulphix
 handle: https://x.com/codeshaine
 source: doc/src
 build: dist

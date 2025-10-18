@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/codeshaine/vulpix/cmd/build"
-	"github.com/codeshaine/vulpix/cmd/preview"
+	"github.com/codeshaine/vulphix/cmd/build"
+	"github.com/codeshaine/vulphix/cmd/preview"
 )
 
-var help = `vulpix
+var help = `vulphix
 
 Ready to generate your doc sites
 

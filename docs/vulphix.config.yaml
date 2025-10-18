@@ -1,6 +1,6 @@
-title: Vulpix
-domain: doc.vulpix.com # (optional)
-description: this is the docs of your vulpix
+title: vulphix
+domain: doc.vulphix.com # (optional)
+description: this is the docs of your vulphix
 handle: https://x.com/codeshaine
 source: src
 build: dist
@@ -20,6 +20,6 @@ sidebar:
   - title: Links
     pages:
       - - Github
-        - https://github.com/codeshaine/vulpix
+        - https://github.com/codeshaine/vulphix
       - - Twitter
         - https://x.com/code_shaine
