@@ -32,6 +32,7 @@ jobs:
         with:
           name: Vulphix ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
           files: bin/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
